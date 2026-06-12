@@ -62,10 +62,11 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-DTCMRAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
-RAM (xrw)      : ORIGIN = 0x24000000, LENGTH = 1024K
-ITCMRAM (xrw)      : ORIGIN = 0x00000000, LENGTH = 64K
-FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 128K
+DTCMRAM (xrw)     : ORIGIN = 0x20000000, LENGTH = 128K
+RAM (xrw)         : ORIGIN = 0x24000000, LENGTH = 1024K
+RAM_CD (xrw)      : ORIGIN = 0x30000000, LENGTH = 288K         /* Clean 288KB Data Space */
+ITCMRAM (xrw)     : ORIGIN = 0x00000000, LENGTH = 64K
+FLASH (rx)        : ORIGIN = 0x8000000,  LENGTH = 1024K        /* hacked. 128K originally */
 }
 
 /* Define output sections */
@@ -195,7 +196,17 @@ SECTIONS
     . = ALIGN(8);
   } >DTCMRAM
 
-
+  /* use it like */
+  /* __attribute__((section(".cd_data"))) uint8_t MyLargeDataPool[64 * 1024]; */
+  /* __attribute__((section(".cd_data"))) uint32_t NetworkBuffer[2048]; */
+  .cd_ram_data (NOLOAD) :
+  {
+    . = ALIGN(32);
+    _scd_data = .;
+    *(.cd_ram_data*)
+    . = ALIGN(32);
+    _ecd_data = .;
+  } > RAM_CD
 
   /* Remove information from the standard libraries */
   /DISCARD/ :

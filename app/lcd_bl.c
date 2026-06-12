@@ -30,6 +30,6 @@ lcd_bl_set_brightness(uint8_t brightness)
 void
 lcd_bl_init(void)
 {
-  lcd_bl_set_brightness(40);
+  lcd_bl_set_brightness(10);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 }

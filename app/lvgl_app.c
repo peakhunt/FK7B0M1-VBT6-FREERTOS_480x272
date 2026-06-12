@@ -16,10 +16,14 @@
 
 
 #include "ft5406.h"
+#include "gt911.h"
 
-#define LTDC_FRAME_BUF_ADDR1   0x24000000  // Size: 480x272x2 = 255KB
-#define LTDC_FRAME_BUF_ADDR2   0x2403FC00  // Size: 480x272x2 = 255KB
-#define LVGL_HEAP_ADDR         0x2407F800  // Size: 514 KB
+#define LTDC_FRAME_BUF_ADDR0   0x24000000  // Size: 480x272x2 = 255KB
+#define LTDC_FRAME_BUF_ADDR1   0x2403FC00  // Size: 480x272x2 = 255KB
+#define LVGL_HEAP_ADDR         0x24080000  // Size: 512 KB
+
+static uint8_t* const frame_buffer0 = (uint8_t*)LTDC_FRAME_BUF_ADDR0; 
+static uint8_t* const frame_buffer1 = (uint8_t*)LTDC_FRAME_BUF_ADDR1; 
 
 extern LTDC_HandleTypeDef hltdc;
 //extern DMA2D_HandleTypeDef hdma2d;
@@ -36,7 +40,7 @@ lvgl_app_touch_read_cb(lv_indev_t * indev, lv_indev_data_t * data)
   int16_t x, y;
   bool pressed;
 
-  ft5406_get(&x, &y, &pressed);
+  gt911_get(&x, &y, &pressed);
 
   if(pressed)
   {
@@ -83,8 +87,9 @@ lvgl_task(void* arg)
   lv_init();
   lv_tick_set_cb(xTaskGetTickCount);
 
-  lv_display_t* disp = lv_st_ltdc_create_partial((void*)LVGL_PARTIAL_BUF_ADDR, NULL, LVGL_PARTIAL_BUF_SIZE, LTDC_LAYER_1);
+  lv_display_t* disp = lv_st_ltdc_create_direct(frame_buffer0, frame_buffer1, LTDC_LAYER_1);
   (void)disp;
+
 
   lv_indev_t * indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
@@ -96,7 +101,7 @@ lvgl_task(void* arg)
     lv_timer_set_period(read_timer, 17);
   }
 
-  //lv_demo_music()
+  //lv_demo_music();
   lv_demo_widgets();
   //lv_demo_benchmark();
 

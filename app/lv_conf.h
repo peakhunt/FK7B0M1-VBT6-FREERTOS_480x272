@@ -16,10 +16,8 @@
 
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
     #define LV_MEM_POOL_EXPAND_SIZE 0
-    //#define LV_MEM_SIZE          (210* 1024)  /* 210KB */
-    //#define LV_MEM_ADR           (0x240CB800) 
-    #define LV_MEM_SIZE          (199U* 1024U)  /* 210KB */
-    #define LV_MEM_ADR           (0x240CE400) 
+    #define LV_MEM_SIZE          (512U* 1024U)  /* 514KB */
+    #define LV_MEM_ADR           (0x24080000) 
     #if LV_MEM_ADR == 0
         #undef LV_MEM_POOL_INCLUDE
         #undef LV_MEM_POOL_ALLOC
@@ -28,7 +26,7 @@
 
 /** Default display refresh, input device read and animation step period. */
 #define LV_DEF_REFR_PERIOD  33      /**< [ms] */
-#define LV_DPI_DEF 217              /**< [px/inch] */
+#define LV_DPI_DEF 129              /**< [px/inch] */
 
 #define LV_USE_OS   LV_OS_FREERTOS
 //#define LV_USE_FREERTOS_TASK_NOTIFY     0
@@ -83,7 +81,7 @@
      * - bitmaps with transparency may use ARGB8888
      */
     #define LV_DRAW_SW_SUPPORT_RGB565               1
-    #define LV_DRAW_SW_SUPPORT_RGB565_SWAPPED       0
+    #define LV_DRAW_SW_SUPPORT_RGB565_SWAPPED       1
     #define LV_DRAW_SW_SUPPORT_RGB565A8             1
     #define LV_DRAW_SW_SUPPORT_RGB888               0
     #define LV_DRAW_SW_SUPPORT_XRGB8888             0
@@ -539,7 +537,7 @@
 #define LV_USE_ST_LTDC    1
 #if LV_USE_ST_LTDC
     /* Only used for partial. */
-    #define LV_ST_LTDC_USE_DMA2D_FLUSH 1
+    #define LV_ST_LTDC_USE_DMA2D_FLUSH 0
 #endif
 #define LV_USE_NXP_ELCDIF   0
 #define LV_USE_WINDOWS    0

@@ -8,6 +8,7 @@
 #include "lcd_app.h"
 #include "lvgl_app.h"
 #include "ft5406.h"
+#include "gt911.h"
 #include "dwt.h"
 
 void
@@ -16,6 +17,7 @@ app_init(void)
   dwt_init();
   led_init();
   lcd_bl_init();
-  ft5406_init();
+  //lcd_app_init();
+  gt911_init();
   lvgl_app_init();
 }
